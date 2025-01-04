@@ -24,7 +24,7 @@ def save_data_for_analysis():
     extractor = ExtractDataSql(host, user, password, database)
     data = extractor.get_data("select * from marketing")
     print(data.head(2))
-    if not data.empty and data.dtypes == pd.DataFrame:
+    if not data.empty and isinstance(data, pd.DataFrame):
         print('+++ got data')
     else:
         raise TypeError("--- Didn't got data")
