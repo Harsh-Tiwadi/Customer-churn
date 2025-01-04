@@ -1,3 +1,3 @@
-from extract import main
+from extract import ExtractDataSql
 
-get_data()
+extractor = ExtractDataSql()
