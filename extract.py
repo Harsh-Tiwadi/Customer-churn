@@ -1,34 +1,38 @@
 import mysql.connector
 import pandas as pd
 
-# Connect to the database
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Cat@968@",
-    database="marketing"
-)
 
-# Create a cursor
-cursor = conn.cursor()
+class ExtractDataSql():
+    def __init__(self, host, user, password, database):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
 
-# Execute a query
-query = "SELECT * FROM marketing"
-cursor.execute(query)
+    def get_data(self, query)->pd.DataFrame:
+        try:
+            conn = mysql.connector.connect(
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database
+        )
+            print(f"Connecting to database {self.database} on {self.host} with user {self.user}")
 
-# Fetch data and convert to DataFrame
-rows = cursor.fetchall()
-columns = [col[0] for col in cursor.description]
-df = pd.DataFrame(rows, columns=columns)
+            if conn.is_connected():
+                print("Connection established.")
+                # get data
+                cursor = conn.cursor()
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                df = pd.DataFrame(rows, columns=columns)
+                # close connection
+                cursor.close()
+                conn.close()
+            else:
+                raise Exception("Failed to connect to the database.")
+            return df
 
-# Display the DataFrame
-print(df.head())
-
-# Close connections
-cursor.close()
-conn.close()
-print(df.info())
-print(df.isnull().sum())
-
-
-def main():
+        except Exception as e:
+            print(f"Error occurred: {e}")
