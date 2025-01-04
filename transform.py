@@ -1,6 +1,7 @@
 from extract import ExtractDataSql
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 load_dotenv()
 
@@ -15,6 +16,20 @@ if not all([host, user, password, database]):
 else:
     print("DB config loaded successfully from .env")
 
-extractor = ExtractDataSql(host, user, password, database)
-data = extractor.get_data("select * from marketing")
-print(data.head())
+def transform_data():
+    pass
+
+
+def save_data_for_analysis():
+    extractor = ExtractDataSql(host, user, password, database)
+    data = extractor.get_data("select * from marketing")
+    print(data.head(2))
+    if not data.empty and data.type() == pd.DataFrame:
+        print('+++ got data')
+    else:
+        print("--- Didn't got data")
+
+    data.to_csv('data/trial1_data.csv', index=False)
+
+if __name__ == '__main__':
+    save_data_for_analysis()
