@@ -14,23 +14,22 @@ database = os.getenv('database')
 if not all([host, user, password, database]):
     raise ValueError("One or more environment variables (host, user, password, database) are not set.")
 else:
-    print("DB config loaded successfully from .env")
+    print("+++ DB config loaded successfully from .env")
 
 def transform_data():
     pass
 
 
-def save_data_for_analysis():
+def save_data_for_notebook():
     extractor = ExtractDataSql(host, user, password, database)
     data = extractor.get_data("select * from marketing")
-    print(data.head(2))
     if not data.empty and isinstance(data, pd.DataFrame):
         print('+++ got data')
     else:
         raise TypeError("--- Didn't got data")
 
     print(data.size)
-    data.to_csv('data/trial1_data.csv', index=False)
+    data.to_csv('data/notebook_data.csv', index=False)
 
 if __name__ == '__main__':
-    save_data_for_analysis()
+    save_data_for_notebook()
