@@ -24,11 +24,12 @@ def save_data_for_analysis():
     extractor = ExtractDataSql(host, user, password, database)
     data = extractor.get_data("select * from marketing")
     print(data.head(2))
-    if not data.empty and data.type() == pd.DataFrame:
+    if not data.empty and data.dtypes == pd.DataFrame:
         print('+++ got data')
     else:
-        print("--- Didn't got data")
+        raise TypeError("--- Didn't got data")
 
+    print(data.size)
     data.to_csv('data/trial1_data.csv', index=False)
 
 if __name__ == '__main__':
