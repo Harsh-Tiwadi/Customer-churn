@@ -21,8 +21,12 @@ def transform_data():
 
 
 def save_data_for_notebook():
-    extractor = ExtractDataSql(host, user, password, database)
-    data = extractor.get_data("select * from marketing")
+    try:
+        extractor = ExtractDataSql(host, user, password, database)
+        data = extractor.get_data("select * from marketing")
+        print("+++ Extracted the queried data")
+    except Exception as e:
+        print(f"--- Error while extracting {e}")
     if not data.empty and isinstance(data, pd.DataFrame):
         print('+++ got data')
     else:
