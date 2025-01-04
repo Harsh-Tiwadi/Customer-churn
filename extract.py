@@ -1,5 +1,5 @@
 import mysql.connector
-import pandas as pd # type: ignore
+import pandas as pd
 
 
 class ExtractDataSql():
@@ -17,10 +17,10 @@ class ExtractDataSql():
             password=self.password,
             database=self.database
         )
-            print(f"Connecting to database {self.database} on {self.host} with user {self.user}")
+            print(f"+++ Connecting to database {self.database} on {self.host} with user {self.user}")
 
             if conn.is_connected():
-                print("Connection established.")
+                print("+++ Connection established.")
                 # get data
                 cursor = conn.cursor()
                 cursor.execute(query)
@@ -31,8 +31,8 @@ class ExtractDataSql():
                 cursor.close()
                 conn.close()
             else:
-                raise Exception("Failed to connect to the database.")
+                raise Exception("--- Failed to connect to the database.")
             return df
 
         except Exception as e:
-            print(f"Error occurred: {e}")
+            print(f"--- Error occurred: {e}")
