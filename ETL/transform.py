@@ -32,7 +32,7 @@ def save_data_for_notebook():
     else:
         raise TypeError("--- Didn't got data")
 
-    #print(data.size)
+    #print(data.shape)
     data.to_csv('data/notebook_data.csv', index=False)
 
 if __name__ == '__main__':
