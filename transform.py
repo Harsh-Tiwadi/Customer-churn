@@ -12,7 +12,7 @@ database = os.getenv('database')
 
 # Validate configuration
 if not all([host, user, password, database]):
-    raise ValueError("One or more environment variables (host, user, password, database) are not set.")
+    raise ValueError("--- One or more environment variables (host, user, password, database) are not set.")
 else:
     print("+++ DB config loaded successfully from .env")
 
@@ -32,7 +32,7 @@ def save_data_for_notebook():
     else:
         raise TypeError("--- Didn't got data")
 
-    print(data.size)
+    #print(data.size)
     data.to_csv('data/notebook_data.csv', index=False)
 
 if __name__ == '__main__':
