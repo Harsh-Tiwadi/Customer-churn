@@ -1,3 +1,10 @@
+"""
+    Add AWS credentials in cli before running this file
+    !pip install awscli
+    !aws configure...
+"""
+
+
 import boto3
 
 bucket_name = 'aws-customer-churn-bucket'
