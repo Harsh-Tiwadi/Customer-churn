@@ -1,39 +1,43 @@
-from extract import ExtractDataSql
+from extract import ExtractData
+# from extract import ExtractDataSql
 from dotenv import load_dotenv
 import os
 import pandas as pd
 
-load_dotenv()
+# load_dotenv()
 
-host = os.getenv('host')
-user = os.getenv('user')
-password = os.getenv('password')
-database = os.getenv('database')
+# host = os.getenv('host')
+# user = os.getenv('user')
+# password = os.getenv('password')
+# database = os.getenv('database')
 
-# Validate configuration
-if not all([host, user, password, database]):
-    raise ValueError("--- One or more environment variables (host, user, password, database) are not set.")
-else:
-    print("+++ DB config loaded successfully from .env")
+# # Validate configuration
+# if not all([host, user, password, database]):
+#     raise ValueError("--- One or more environment variables (host, user, password, database) are not set.")
+# else:
+#     print("+++ DB config loaded successfully from .env")
+
+# def save_data_for_notebook():
+#     try:
+#         extractor = ExtractDataSql(host, user, password, database)
+#         data = extractor.get_data("select * from marketing")
+#         print("+++ Extracted the queried data")
+#     except Exception as e:
+#         print(f"--- Error while extracting {e}")
+#     if not data.empty and isinstance(data, pd.DataFrame):
+#         print('+++ got data')
+#     else:
+#         raise TypeError("--- Didn't got data")
+
+#     #print(data.shape)
+#     data.to_csv('data/notebook_data.csv', index=False)
+
 
 def transform_data():
-    pass
+    extractor = ExtractData()
+    data = extractor.get_data('data/customer churn', )
+    print(data)
 
-
-def save_data_for_notebook():
-    try:
-        extractor = ExtractDataSql(host, user, password, database)
-        data = extractor.get_data("select * from marketing")
-        print("+++ Extracted the queried data")
-    except Exception as e:
-        print(f"--- Error while extracting {e}")
-    if not data.empty and isinstance(data, pd.DataFrame):
-        print('+++ got data')
-    else:
-        raise TypeError("--- Didn't got data")
-
-    #print(data.shape)
-    data.to_csv('data/notebook_data.csv', index=False)
 
 if __name__ == '__main__':
-    save_data_for_notebook()
+    transform_data()

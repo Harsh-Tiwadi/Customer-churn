@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+from pathlib import Path
 
 
 class ExtractDataSql():
@@ -36,3 +37,17 @@ class ExtractDataSql():
 
         except Exception as e:
             print(f"--- Error occurred: {e}")
+
+class ExtractData():
+    def get_data(self, file_path:str, dir=False):
+        try:
+            if dir==False and file_path[-4:]=='.csv':
+                data = pd.read_csv(file_path)
+                return data
+            elif dir==True:
+                dir_path =Path(file_path)
+                csv_files = list(dir_path.glob('*.csv'))
+                return {csv_file.stem:pd.read_csv(csv_file) for csv_file in csv_files}
+        except Exception as e:
+            print(e)
+
