@@ -44,7 +44,7 @@ class ExtractData():
             if dir==False and file_path[-4:]=='.csv':
                 data = pd.read_csv(file_path)
                 return data
-            elif dir==True:
+            elif dir==True and file_path[-4:]!='.csv':
                 dir_path =Path(file_path)
                 csv_files = list(dir_path.glob('*.csv'))
                 return {csv_file.stem:pd.read_csv(csv_file) for csv_file in csv_files}

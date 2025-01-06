@@ -35,8 +35,14 @@ import pandas as pd
 
 def transform_data():
     extractor = ExtractData()
-    data = extractor.get_data('data/customer churn', )
-    print(data)
+    data_dict = extractor.get_data('data/customer churn', dir=True)
+    data_name = [name for name in data_dict.keys()]
+    print(data_name)
+    for name in data_name:
+        print(f'### --> {name}:\n {data_dict[name].columns}\n{"-"*70}')
+
+
+
 
 
 if __name__ == '__main__':
