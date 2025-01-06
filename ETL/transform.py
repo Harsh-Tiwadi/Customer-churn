@@ -36,14 +36,19 @@ import pandas as pd
 def transform_data():
     extractor = ExtractData()
     data_dict = extractor.get_data('data/customer churn', dir=True)
-    data_name = [name for name in data_dict.keys()]
-    print(data_name)
-    for name in data_name:
-        print(f'### --> {name}:\n {data_dict[name].columns}\n{"-"*70}')
+    data = pd.concat(data_dict.values(), axis=1)
+    data = data[:, ~data.columns.duplicated()]
+    return data
 
+def save_data(data, verify:bool):
+    if verify:
+        data.to_csv('data/customer churn/merged_data')
+    else:
+        print('please verify the data')
 
 
 
 
 if __name__ == '__main__':
-    transform_data()
+    data = transform_data()
+    save_data(data, verify=True)
