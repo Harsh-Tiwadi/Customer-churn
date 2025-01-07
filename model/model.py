@@ -16,13 +16,13 @@ class ExpModel():
     @df.setter
     def df(self, value):
         print('updating')
-        if isinstance(value, list):
-            self._df['name'] = value
+        if isinstance(value, pd.DataFrame):
+            self._df = value
         else:
             raise ValueError("Not a DataFrame.")
 
     def __str__(self):
-        return f"{self.df}"
+        return f"{self.df.head(1)}"
 
 name = pd.DataFrame({'name':['jhon', 'james', 'jack'],'age':[34,23,35]})
 model = ExpModel(name)
