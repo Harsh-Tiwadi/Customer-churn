@@ -15,7 +15,7 @@ from sklearn.datasets import make_regression
 
 class RegressionModel():
     """
-    Pass the clean data and target column and classification/regression to RegressionModel Class for model training
+    Pass the clean data and target column to RegressionModel Class for seeing all models performance
     """
     def __init__(self, df, target:str):
         self._df = df
