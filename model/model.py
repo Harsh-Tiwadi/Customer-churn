@@ -9,7 +9,9 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, Grad
 from sklearn.linear_model import LinearRegression,LassoCV, LogisticRegression, RidgeCV, ElasticNetCV
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
+import xgboost as xgb
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 from sklearn.datasets import make_regression
 
 
@@ -63,7 +65,8 @@ class RegressionModel():
         print(f'1. linear_regression mean_squared_error: {mean_squared_error(y_test, y_pred_lr)}')
 
         # !> LassoCV
-        alphas=[0.1, 0.7, 0.9, 1, 2, 5, 10, 100]
+        alphas=[0.001, 0.01, 0.1, 0.7, 0.9, 1, 5, 10]
+
         lasso_regression = LassoCV(alphas=alphas, cv=5, tol=0.001, random_state=42) # it also take random co-efficient and try to optimize it with each rotation, one co-efficient at a time.
         lasso_regression.fit(x_train, x_test)
         best_alpha_lasso = lasso_regression.alpha_
@@ -78,8 +81,8 @@ class RegressionModel():
         best_alpha_ridge =ridge_regression.alpha_
         print(f'best_alpha fr ridge: {best_alpha_ridge}')
         y_pred_ridge = ridge_regression.predict(x_test)
-        print(f'2. ridge_regression r2_score: {r2_score(y_test, y_pred_ridge)}')
-        print(f'2. ridge_regression mean_squared_error: {mean_squared_error(y_test, y_pred_ridge)}')
+        print(f'3. ridge_regression r2_score: {r2_score(y_test, y_pred_ridge)}')
+        print(f'3. ridge_regression mean_squared_error: {mean_squared_error(y_test, y_pred_ridge)}')
 
         # !> Elastic_Net
         elastic_net = ElasticNetCV(alphas=alphas, l1_ratio=[.1, .5, .7, .9, .95, .99, 1], tol=0.001, cv=5, random_state=42) # l1_ratio for using both L1 and L2
@@ -87,8 +90,8 @@ class RegressionModel():
         best_alpha_elastic_net =elastic_net.alpha_
         print(f'best_alpha fr elastic_net: {best_alpha_elastic_net}')
         y_pred_elastic_net = elastic_net.predict(x_test)
-        print(f'2. elastic_net r2_score: {r2_score(y_test, y_pred_elastic_net)}')
-        print(f'2. elastic_net mean_squared_error: {mean_squared_error(y_test, y_pred_elastic_net)}')
+        print(f'4. elastic_net r2_score: {r2_score(y_test, y_pred_elastic_net)}')
+        print(f'4. elastic_net mean_squared_error: {mean_squared_error(y_test, y_pred_elastic_net)}')
 
         # !> Decision Tree Regressor
         d_tree_param_grid = {
@@ -112,8 +115,8 @@ class RegressionModel():
         print("Best parameters fr decision_tree:", decision_tree_cv.best_params_)
         best_decision_tree = decision_tree_cv.best_estimator_
         y_pred_d_tree = best_decision_tree.predict(x_test)
-        print(f'2. decision_tree r2_score: {r2_score(y_test, y_pred_d_tree)}')
-        print(f'2. decision_tree mean_squared_error: {mean_squared_error(y_test, y_pred_d_tree)}')
+        print(f'5. decision_tree r2_score: {r2_score(y_test, y_pred_d_tree)}')
+        print(f'5. decision_tree mean_squared_error: {mean_squared_error(y_test, y_pred_d_tree)}')
 
         # !> Random Forest Regressor
         rf_tree_param_grid = {
@@ -141,10 +144,72 @@ class RegressionModel():
         print("Best parameters fr random_forest:", random_forest_cv.best_params_)
         best_random_forest = random_forest_cv.best_estimator_
         y_pred_rf_tree = best_random_forest.predict(x_test)
-        print(f'2. random_forest r2_score: {r2_score(y_test, y_pred_rf_tree)}')
-        print(f'2. random_forest mean_squared_error: {mean_squared_error(y_test, y_pred_rf_tree)}')
+        print(f'6. random_forest r2_score: {r2_score(y_test, y_pred_rf_tree)}')
+        print(f'6. random_forest mean_squared_error: {mean_squared_error(y_test, y_pred_rf_tree)}')
 
         # !> Gradient Boosting regressor
+
+        gb_params = {
+            'n_estimators': [100,200,400,500],
+            'loss': ['squared_error', 'huber'],
+            'learning_rate': [0.001,0.01,0.1,1,10],
+            'criterion': ['friedman_mse', 'squared_error'],
+            'min_samples_split': [5,7,9],
+            'min_samples_leaf': [3,5,7],
+            'max_depth': [3,5,9],
+        }
+
+        gradient_boosting = GradientBoostingRegressor(
+                                                      subsample=1,
+                                                      max_features='sqrt',
+                                                      validation_fraction=0.2,
+                                                      n_iter_no_change=10,
+                                                      tol=0.001,
+                                                      alpha=0.9,
+                                                      ccp_alpha=0,
+                                                      random_state=42
+        )
+
+        gradient_boosting_cv = GridSearchCV(gradient_boosting, param_grid=gb_params, cv=5, scoring="neg_mean_squared_error")
+        gradient_boosting_cv.fit(x_train,y_train)
+        print("Best parameters fr gradient_boosting:", gradient_boosting_cv.best_params_)
+        best_gradient_boosting = gradient_boosting_cv.best_estimator_
+        y_pred_gb = best_gradient_boosting.predict(x_test)
+        print(f'7. gradient_boosting r2_score: {r2_score(y_test, y_pred_gb)}')
+        print(f'7. gradient_boosting mean_squared_error: {mean_squared_error(y_test, y_pred_gb)}')
+
+        # !> XGBoost regressor
+
+        xg_params = {
+            'n_estimators': [100,200,400,500],
+            'learning_rate': [0.001,0.01,0.1,1,10],
+            'min_samples_split': [5,7,9],
+            'min_samples_leaf': [3,5,7],
+            'max_depth': [3,5,9],
+            'reg_alpha': [0,0.1,0.5,1,2],
+            'reg_alpha': [0,0.1,0.5,1,2]
+
+        }
+
+        xg_boost = xgb.XGBRegressor(
+            objective='reg:squarederror',  # The learning objective. 'reg:squarederror' is standard for regression.
+            n_estimators=100,              # The number of boosting rounds (trees). (Range: 50-500+, Start around 100)
+            learning_rate=0.1,             # The step size shrinkage used to prevent overfitting. (Range: 0.001-1.0, Start low)
+            max_depth=3,                   # Maximum depth of a tree. Controls complexity. (Range: 3-10, Start around 3-6)
+            min_child_weight=1,            # Minimum sum of instance weight (hessian) needed in a child. Higher values prevent overfitting. (Range: 1-10+, Start low)
+            subsample=1,                   # Subsample ratio of the training instance. Similar to subsample in GradientBoosting. (Range: 0.6-1.0, Start high)
+            n_jobs=-1,                     # Use all available cores.
+            random_state=42,               # Random seed for reproducibility.
+        )
+
+        xg_boost_cv = GridSearchCV(xg_boost, param_grid=xg_params, cv=5, scoring='neg_mean_squared_error')
+        xg_boost_cv.fit(x_train, y_train)
+        print("Best parameters fr xg_boost:", xg_boost_cv.best_params_)
+        best_xgboost = xg_boost_cv.best_estimator_
+        y_pred_xg = best_xgboost.predict(x_test)
+        print(f'8. xg_boost r2_score: {r2_score(y_test, y_pred_xg)}')
+        print(f'8. xg_boost mean_squared_error: {mean_squared_error(y_test, y_pred_xg)}')
+
 
 
 
@@ -172,12 +237,38 @@ class RegressionModel():
         'GaussianNB'
         """
 
-        self.mode = "C"
-        return 'hello'
-
     def __str__(self):
         return f"{self.df.head(1)}"
 
 # df = pd.DataFrame({'name': ['harsh', 'k', 'l'], 'age': [25, 26, 27]})
 # model = ExpModel(df,"hey", "C")
 # print(model.direct_run())
+# df = pd.read_csv('data/customer churn/merged_data.csv')
+# model = RegressionModel(df,)
+
+if __name__ == "__main__":
+    df = pd.read_csv('data/customer churn/merged_data.csv')
+    df = df.replace(['Yes', 'No'], [1,0])
+    df = df.dropna(axis=0)
+    df = df[df.select_dtypes('int')]
+    x = df.drop('churn_value', axis=1)
+    y = df['churn_value']
+    x_train, y_train, x_test, y_test = train_test_split(x,y,test_size=0.25,random_state=42)
+
+    log_params = {
+    'C': [i for i in range(1,10)],
+    'solver': ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga'],
+    'max_iter': [100,200,300],
+    }
+
+    log = LogisticRegression(
+                            penalty ="l2",
+                            dual = False,
+                            tol = 0.0001,
+                            random_state = 42,
+                            verbose = 1,
+                            n_jobs = -1,
+    )
+
+    log_cv = GridSearchCV(log, param_grid=log_params, cv=5, scoring="accuracy")
+    log_cv.fit(x_train,y_train)
