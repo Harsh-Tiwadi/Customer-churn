@@ -249,16 +249,15 @@ class RegressionModel():
 if __name__ == "__main__":
     df = pd.read_csv('data/customer churn/merged_data.csv')
     df = df.replace(['Yes', 'No'], [1,0])
-    df = df.dropna(axis=0)
-    df = df[df.select_dtypes('int')]
-    x = df.drop('churn_value', axis=1)
+    df = df.drop(df.select_dtypes(exclude='int').columns.to_list(),axis=1)
+    x = df.drop(['Unnamed: 0.2','churn_value'], axis=1)
     y = df['churn_value']
-    x_train, y_train, x_test, y_test = train_test_split(x,y,test_size=0.25,random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.25,random_state=42)
 
     log_params = {
-    'C': [i for i in range(1,10)],
-    'solver': ['lbfgs', 'liblinear', 'newton-cg', 'newton-cholesky', 'sag', 'saga'],
-    'max_iter': [100,200,300],
+    'C': [i for i in range(1,5)],
+    'solver': ['lbfgs', 'newton-cg', 'sag', 'saga'],
+    'max_iter': [500,1000,2000],
     }
 
     log = LogisticRegression(
@@ -272,3 +271,6 @@ if __name__ == "__main__":
 
     log_cv = GridSearchCV(log, param_grid=log_params, cv=5, scoring="accuracy")
     log_cv.fit(x_train,y_train)
+    print('best params: ', log_cv.best_params_)
+    y_pred = log_cv.predict(x_test)
+    print('accuracy score',accuracy_score(y_test,y_pred))
