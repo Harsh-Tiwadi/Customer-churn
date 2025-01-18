@@ -1,0 +1,52 @@
+{
+    "shape": [
+        7043,
+        51
+    ],
+    "gender": {
+        "1": "Male",
+        "2": "Female"
+    },
+    "country": {
+        "1": "United States"
+    },
+    "state": {
+        "1": "California"
+    },
+    "internet_type": {
+        "1": "Fiber Optic",
+        "2": "DSL",
+        "3": "Cable"
+    },
+    "contract": {
+        "1": "Month-to-Month",
+        "2": "Two Year",
+        "3": "One Year"
+    },
+    "payment_method": {
+        "1": "Electronic check",
+        "2": "Mailed check",
+        "3": "Bank transfer (automatic)",
+        "4": "Credit card (automatic)"
+    },
+    "offer": {
+        "1": "Offer B",
+        "2": "Offer E",
+        "3": "Offer D",
+        "4": "Offer A",
+        "5": "Offer C"
+    },
+    "extra_data_charges": {
+        "0": "not_paid",
+        "1": "paid"
+    },
+    "referrals": {
+        "0": "not_referred",
+        "1": "referred_less_than_5",
+        "2": "referred_more_than_5"
+    },
+    "clean_shape": [
+        7017,
+        42
+    ]
+}
