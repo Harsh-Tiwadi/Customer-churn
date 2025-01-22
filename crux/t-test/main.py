@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
-def independent_t(group1, group2):
+def independent_t(group1, group2, alpha=0.05):
     formula = 't = (x̄₁ - x̄₂) / sqrt(s²ₚ * (1/n₁ + 1/n₂))'
     params = {
         'x1':'Mean of the first sample',
@@ -11,7 +11,6 @@ def independent_t(group1, group2):
         'n1':'Sample size of the first group',
         'n2':'Sample size of the second group'
     }
-    alpha = 0.05
 
     try:
         t_statistic, p_value = stats.ttest_ind(group1, group2)
@@ -23,14 +22,13 @@ def independent_t(group1, group2):
         raise('something went wrong', e)
 
 
-def paired_t(group1_pre, group1_post):
+def paired_t(group1_pre, group1_post, alpha=0.05):
     formula = 't = d / (standard deviation / sqrt(n))'
     params = {
         'd': 'Mean of the differences between the paired observations (dᵢ = x₁ᵢ - x₂ᵢ, where x₁ᵢ and x₂ᵢ are the paired measurements for the i-th subject).',
         'standard deviation': 'Standard deviation of the differences.',
         'n': 'Number of pairs (which is also the number of subjects).'
     }
-    alpha = 0.05
 
     try:
         t_statistic, p_value = stats.ttest_rel(group1_pre, group1_post)
@@ -42,7 +40,7 @@ def paired_t(group1_pre, group1_post):
         raise('something went wrong', e)
 
 
-def onesample_t(sample, pop_mean):
+def onesample_t(sample, pop_mean, alpha=0.05):
     formula = 't = (x̄ - μ) / (s / sqrt(n))'
     params = {
         'x': 'Mean of the sample.',
@@ -50,7 +48,6 @@ def onesample_t(sample, pop_mean):
         's': 'Standard deviation of the sample.',
         'n': 'Sample size.'
     }
-    alpha = 0.05
 
     try:
         t_statistic, p_value = stats.ttest_1samp(sample, pop_mean)
@@ -60,3 +57,8 @@ def onesample_t(sample, pop_mean):
             return {"t_statistic: ":t_statistic, "p_value: ":p_value, "crux: ":"There's not enough statistically significant difference."}
     except Exception as e:
         raise('something went wrong', e)
+
+# group1 = np.random.normal(0, 10, 100)
+# group2 = np.random.normal(80, 90, 100)
+# r = independent_t(group1, group2)
+# print(r)

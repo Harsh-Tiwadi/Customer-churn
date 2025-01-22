@@ -3,6 +3,12 @@ import numpy as np
 from scipy import stats
 
 def correlation(x,y,method:{'normal','ordinal'}='normal', alpha=0.05):
+
+    if method not in ('normal', 'ordinal'):
+        raise ValueError("Method must be 'normal' or 'ordinal'.")
+    if len(x)!=len(y):
+        raise ValueError("Input arrays must be of same length.")
+
     try:
         if method=='ordinal':
             spearman_corr, spearman_p = stats.spearmanr(x, y)
@@ -19,3 +25,7 @@ def correlation(x,y,method:{'normal','ordinal'}='normal', alpha=0.05):
     except Exception as e:
         raise(e)
 
+# x = np.random.rand(50)
+# y = x**3 + np.random.normal(0, 0.2, 50)
+# result = correlation(x,y,method='ordinal')
+# print(result)
