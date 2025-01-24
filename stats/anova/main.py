@@ -12,11 +12,11 @@ def anova_test(alpha=0.05, *args):
     except Exception as e:
         raise ValueError(e)
 
-# Example usage:
-np.random.seed(0)
-group1 = np.random.normal(10, 2, 50)
-group2 = np.random.normal(12, 2, 50)
-group3 = np.random.normal(11, 2, 50)
+# # Example usage:
+# np.random.seed(0)
+# group1 = np.random.normal(10, 2, 50)
+# group2 = np.random.normal(12, 2, 50)
+# group3 = np.random.normal(11, 2, 50)
 
-r = anova_test(group1, group2, group3)
-print(r)
+# r = anova_test(group1, group2, group3)
+# print(r)
