@@ -1,0 +1,6 @@
+,accuracy,best_params
+svm,0.9572649572649573,"{'C': 0.4418441521199725, 'class_weight': None, 'loss': 'squared_hinge', 'penalty': 'l1'}"
+lr_model,0.9566951566951567,"{'C': 18.375468962060847, 'class_weight': None, 'max_iter': 1000, 'penalty': 'l1', 'solver': 'liblinear'}"
+decision_tree,0.9441595441595442,"{'criterion': 'entropy', 'max_depth': 10, 'min_samples_leaf': 5, 'min_samples_split': 2}"
+naive_bayes,0.8774928774928775,{'var_smoothing': 1e-08}
+knn,0.7589743589743589,"{'n_neighbors': 8, 'p': 1, 'weights': 'uniform'}"
