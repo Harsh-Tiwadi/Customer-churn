@@ -4,7 +4,6 @@
     !aws configure...
 """
 
-
 import boto3
 
 bucket_name = 'aws-customer-churn-bucket'
