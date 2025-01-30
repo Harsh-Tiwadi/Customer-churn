@@ -1,0 +1,22 @@
+{
+  "name": "customer-churn",
+  "version": "1.0.0",
+  "description": "Predict customer data to improve retention strategies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harsh-Tiwadi/Customer-churn.git"
+  },
+  "author": "Harsh-Tiwadi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Harsh-Tiwadi/Customer-churn/issues"
+  },
+  "homepage": "https://github.com/Harsh-Tiwadi/Customer-churn#readme",
+  "dependencies": {
+    "danfojs-node": "^1.1.2"
+  }
+}

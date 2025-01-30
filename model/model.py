@@ -21,9 +21,14 @@ def main():
 ## if dataframe:
 
     if isinstance(df, pd.DataFrame):
-        model = joblib.load('saved_svm_model.joblib')
-        result = model.predict(df)
-        return {'data_shape':df.shape, 'result':result}
+        try:
+            model = joblib.load('model/saved_svm_model.joblib')
+            result = model.predict(df)
+            # result = df.shape
+            print(result)
+            return {'data_shape':df.shape, 'result':result}
+        except Exception as e:
+            print(e)
     else:
         raise ValueError('Not a dataframe')
 
