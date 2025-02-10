@@ -26,6 +26,6 @@ class TestData():
         else:
             print('+++ data validated')
 
-
-obj = TestData(data)
-obj.check()
+if __name__ == '__main__':
+    obj = TestData(data)
+    obj.check()
